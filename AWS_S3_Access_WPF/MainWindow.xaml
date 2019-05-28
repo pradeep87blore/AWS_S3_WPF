@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Initialized="Window_Initialized">
     <Grid>
-        
+        <TextBox x:Name="textbox_filePath" HorizontalAlignment="Left" Height="25" Margin="137,52,0,0" TextWrapping="Wrap" Text="Enter the file path here" VerticalAlignment="Top" Width="474"/>
+        <Button Content="Choose File" HorizontalAlignment="Left" Height="25" Margin="10,52,0,0" VerticalAlignment="Top" Width="107" Click="Button_Click"/>
+        <Button Content="Upload" HorizontalAlignment="Left" Height="25" Margin="633,52,0,0" VerticalAlignment="Top" Width="86" Click="Button_Click_1"/>
+        <Button x:Name="ListBuckets" Content="Button" HorizontalAlignment="Left" Height="24" Margin="10,109,0,0" VerticalAlignment="Top" Width="107" Click="ListBuckets_Click"/>
+        <ListBox x:Name="listbox_bucketList" HorizontalAlignment="Left" Height="132" Margin="137,109,0,0" VerticalAlignment="Top" Width="582"/>
+
     </Grid>
 </Window>

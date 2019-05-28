@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Amazon;
+using Amazon.Runtime;
+using Amazon.Runtime.CredentialManagement;
 using Amazon.S3;
 using Amazon.S3.Model;
 
@@ -11,19 +13,16 @@ namespace S3Access_NETFramework
 {
     public class S3Access
     {
-        // Specify your bucket region (an example region is shown).
-        private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USWest2;
-        private static IAmazonS3 client;
 
         // Create the specified bucket. If it fails, return an empty string, else return the URL to the bucket
         public string CreateBucket(string bucketName)
         {
-            return S3Access_NETFramework.CreateBucket.CreateBucketSync(bucketName);
+            return BucketCreator.CreateBucket(bucketName);
         }
         // Upload the file to the specified bucket and return the URL to the same
         public bool UploadFile(string sFilePath, string bucketName)
         {
-            return S3Access_NETFramework.UploadObject.WritingAnObject(sFilePath, bucketName);
+            return ObjectUploader.WriteAnObject(sFilePath, bucketName);
         }
 
         // Check if any file with this name exists on the bucket
@@ -44,20 +43,32 @@ namespace S3Access_NETFramework
         {
             // If we have the permissions to access the specified bucket, fetch all the files from it and return the list
 
-            using (client = new AmazonS3Client(bucketRegion))
-            {
-                Console.WriteLine("Listing objects stored in a bucket");
-                //ListingObjectsAsync().Wait();
-            }
+            //using (client = new AmazonS3Client(bucketRegion))
+            //{
+            //    Console.WriteLine("Listing objects stored in a bucket");
+            //    //ListingObjectsAsync().Wait();
+            //}
 
             return null;
         }
 
-        public List<string> GetAllBuckets(string userId)
+        public List<string> GetAllBuckets()
         {
-            // Find all the buckets of this user, assuming there are sufficient permissions available
+            // Find all the buckets of the current user, assuming there are sufficient permissions available
 
-            return null;
+            var bucketList = BucketInfoFetcher.GetBucketList();
+
+            Console.WriteLine("Listing the bucket info of the current user");
+
+            List<string> bucketListInfo = new List<string>();
+            foreach (var bucketInfo in bucketList)
+            {
+                Console.WriteLine(bucketInfo);
+                bucketListInfo.Add(bucketInfo.ToString());
+
+            }
+
+            return bucketListInfo;
         }
     }
 }

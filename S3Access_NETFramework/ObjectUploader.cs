@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 
 namespace S3Access_NETFramework
 {
-    class UploadObject
+    class ObjectUploader
     {        
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.EUWest1;
 
-        private static IAmazonS3 client;       
+        private static IAmazonS3 s3Client;       
 
-        public static bool WritingAnObject(string filePath, string bucketName)
+        public static bool WriteAnObject(string filePath, string bucketName)
         {
             try
             {
                 var fileInfo = filePath.Split('\\');
 
-                if (client == null)
-                    client = new AmazonS3Client("AccessKey", "SecretKey", RegionEndpoint.USWest2);
+                if (s3Client == null)
+                    s3Client = S3ClientProvider.GetS3Client();
 
                 string keyName = fileInfo[fileInfo.Length - 1];
                 // 1. Put object-specify only key name for the new object.
@@ -38,7 +38,7 @@ namespace S3Access_NETFramework
                     request.InputStream = stream;
 
                     // Put object
-                    PutObjectResponse response = client.PutObject(request);
+                    PutObjectResponse response = s3Client.PutObject(request);
 
                     if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
                         return true;
