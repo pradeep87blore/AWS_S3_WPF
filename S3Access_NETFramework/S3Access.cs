@@ -18,7 +18,7 @@ namespace S3Access_NETFramework
         // Create the specified bucket. If it fails, return an empty string, else return the URL to the bucket
         public string CreateBucket(string bucketName)
         {
-
+            S3Access_NETFramework.CreateBucket.CreateBucketAsync(bucketName).Wait();
             return string.Empty;
         }
         // Upload the file to the specified bucket and return the URL to the same

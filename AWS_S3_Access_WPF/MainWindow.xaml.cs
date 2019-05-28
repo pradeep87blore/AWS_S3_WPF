@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using S3Access_NETFramework;
 
 namespace AWS_S3_Access_WPF
 {
@@ -20,9 +21,18 @@ namespace AWS_S3_Access_WPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private S3Access s3Accesser = null;
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+            if(s3Accesser == null)
+                s3Accesser = new S3Access();
+
+            s3Accesser.CreateBucket("Pradeep87BloreBucket");
         }
     }
 }
