@@ -13,8 +13,8 @@ namespace S3Access_NETFramework
     {
         public static BasicAWSCredentials GetCredentials()
         {
-            var awsCredentials = new Amazon.Runtime.BasicAWSCredentials("accessKey", 
-                "secretkey");
+            var awsCredentials = new Amazon.Runtime.BasicAWSCredentials("AccessKey",
+                "SecretKey");
 
             return awsCredentials;
         }

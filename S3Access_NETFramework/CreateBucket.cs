@@ -18,27 +18,72 @@ namespace S3Access_NETFramework
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USWest2;
         private static IAmazonS3 s3Client;
         
+
+        public static string CreateBucketSync(string bucketName)
+        {
+            try
+            {
+                //var awsCredentials = CredentialFetcher.GetCredentials();
+
+                if (s3Client == null)
+                    s3Client = new AmazonS3Client("AccessKey", "SecretKey", RegionEndpoint.USWest2);
+
+                //if (!(await AmazonS3Util.DoesS3BucketExistAsync(s3Client, bucketName)))
+                {
+                    var putBucketRequest = new PutBucketRequest
+                    {
+                        BucketName = bucketName,
+                        UseClientRegion = false,
+                        BucketRegion = S3Region.USW2
+                    };
+
+                    PutBucketResponse putBucketResponse = s3Client.PutBucket(putBucketRequest);
+                    
+                }
+
+                
+                // Retrieve the bucket location.
+                string bucketLocation = FindBucketLocation(s3Client, bucketName);
+
+                Console.WriteLine(bucketLocation);
+
+                return bucketLocation;
+            }
+            catch (AmazonS3Exception e)
+            {
+                Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+            }
+
+            return null;
+        }
         public static async Task CreateBucketAsync(string bucketName)
         {
             try
             {
-                var awsCredentials = CredentialFetcher.GetCredentials();
+                //var awsCredentials = CredentialFetcher.GetCredentials();
 
                 if (s3Client == null)
-                    s3Client = new AmazonS3Client(awsCredentials, bucketRegion);
+                    s3Client = new AmazonS3Client("AccessKey", "SecretKey", RegionEndpoint.USWest2);
                 
                 //if (!(await AmazonS3Util.DoesS3BucketExistAsync(s3Client, bucketName)))
                 {
                     var putBucketRequest = new PutBucketRequest
                     {
                         BucketName = bucketName,
-                        UseClientRegion = true
-                    };
+                        UseClientRegion = false,
+                        BucketRegion = S3Region.USW2
+                };
 
                     PutBucketResponse putBucketResponse = await s3Client.PutBucketAsync(putBucketRequest);
                 }
                 // Retrieve the bucket location.
                 string bucketLocation = await FindBucketLocationAsync(s3Client, bucketName);
+
+                Console.WriteLine(bucketLocation);
             }
             catch (AmazonS3Exception e)
             {
@@ -57,6 +102,18 @@ namespace S3Access_NETFramework
                 BucketName = bucketName
             };
             GetBucketLocationResponse response = await client.GetBucketLocationAsync(request);
+            bucketLocation = response.Location.ToString();
+            return bucketLocation;
+        }
+
+        static string FindBucketLocation(IAmazonS3 client, string bucketName)
+        {
+            string bucketLocation;
+            var request = new GetBucketLocationRequest()
+            {
+                BucketName = bucketName
+            };
+            GetBucketLocationResponse response = client.GetBucketLocation(request);
             bucketLocation = response.Location.ToString();
             return bucketLocation;
         }

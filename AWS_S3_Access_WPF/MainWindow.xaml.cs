@@ -29,10 +29,16 @@ namespace AWS_S3_Access_WPF
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-            if(s3Accesser == null)
+            string bucketName = "pradeep87blore3";
+
+            string sFilePath = "D:\\TestImage.jpg";
+            if (s3Accesser == null)
                 s3Accesser = new S3Access();
 
-            s3Accesser.CreateBucket("Pradeep87BloreBucket");
+            Console.WriteLine(s3Accesser.CreateBucket(bucketName));
+
+            s3Accesser.UploadFile(sFilePath, bucketName);
+
         }
     }
 }

@@ -3,6 +3,7 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,46 +11,39 @@ using System.Threading.Tasks;
 namespace S3Access_NETFramework
 {
     class UploadObject
-    {
-        private const string bucketName = "*** bucket name ***";
-        // Example creates two objects (for simplicity, we upload same file twice).
-        // You specify key names for these objects.
-        private const string keyName1 = "*** key name for first object created ***";
-        private const string keyName2 = "*** key name for second object created ***";
-        private const string filePath = @"*** file path ***";
+    {        
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.EUWest1;
 
-        private static IAmazonS3 client;
+        private static IAmazonS3 client;       
 
-        public static void Main()
-        {
-            client = new AmazonS3Client(bucketRegion);
-            WritingAnObjectAsync().Wait();
-        }
-
-        static async Task WritingAnObjectAsync()
+        public static bool WritingAnObject(string filePath, string bucketName)
         {
             try
             {
+                var fileInfo = filePath.Split('\\');
+
+                if (client == null)
+                    client = new AmazonS3Client("AccessKey", "SecretKey", RegionEndpoint.USWest2);
+
+                string keyName = fileInfo[fileInfo.Length - 1];
                 // 1. Put object-specify only key name for the new object.
-                var putRequest1 = new PutObjectRequest
+                var request = new PutObjectRequest
                 {
                     BucketName = bucketName,
-                    Key = keyName1,
-                    ContentBody = "sample text"
+                    Key = keyName
                 };
-
-                PutObjectResponse response1 = await client.PutObjectAsync(putRequest1);
-
-                // 2. Put the object-set ContentType and add metadata.
-                var putRequest2 = new PutObjectRequest
+                
+                using (FileStream stream = new FileStream(filePath, FileMode.Open))
                 {
-                    BucketName = bucketName,
-                    Key = keyName2,
-                    FilePath = filePath,
-                    ContentType = "text/plain"
-                };
-                putRequest2.Metadata.Add("x-amz-meta-title", "someTitle");
+                    request.InputStream = stream;
+
+                    // Put object
+                    PutObjectResponse response = client.PutObject(request);
+
+                    if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                        return true;
+                }
+                
             }
             catch (AmazonS3Exception e)
             {
@@ -63,6 +57,8 @@ namespace S3Access_NETFramework
                     "Unknown encountered on server. Message:'{0}' when writing an object"
                     , e.Message);
             }
+
+            return false;
         }
     }
 }
