@@ -27,7 +27,7 @@ namespace S3Access_NETFramework
 
         public override string ToString()
         {
-            return string.Format("Bucket Name: [{0}], Bucket Region: [{1}[, Bucket Owner: [{2}]",
+            return string.Format("{0} bucket is in region: [{1}]. Bucket Owner is [{2}]",
                 BucketName, BucketRegion, BucketOwner);
         }
     }

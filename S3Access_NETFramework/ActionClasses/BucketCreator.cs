@@ -17,13 +17,34 @@ namespace S3Access_NETFramework
         // Specify your bucket region (an example region is shown).
         private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USWest2;
         private static IAmazonS3 s3Client;
-        
+
+        /*
+         * https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-s3-bucket-naming-requirements.html
+         * AWS Bucket Name rules:
+         * The bucket name can be between 3 and 63 characters long, and can contain only lower-case characters, numbers, periods, and dashes.
+
+            Each label in the bucket name must start with a lowercase letter or number.
+
+            The bucket name cannot contain underscores, end with a dash, have consecutive periods, or use dashes adjacent to periods.
+
+            The bucket name cannot be formatted as an IP address (198.51.100.24).
+         */
+
+        private static bool ValidateBucketName(string bucketName)
+        {
+            // TODO: Validate the bucket name rules
+            return true;
+        }
+
 
         public static string CreateBucket(string bucketName, bool publicAccessAllowed = false)
         {
             try
             {
-                //var awsCredentials = CredentialFetcher.GetCredentials();
+                if (!ValidateBucketName(bucketName))
+                {
+                    return null; // TODO: Prepare a proper error code and send the same back, instead of returning null
+                }
 
                 if (s3Client == null)
                     s3Client = S3ClientProvider.GetS3Client();
@@ -104,6 +125,7 @@ namespace S3Access_NETFramework
 
             return null;
         }
+
         
         static string FindBucketLocation(IAmazonS3 client, string bucketName)
         {

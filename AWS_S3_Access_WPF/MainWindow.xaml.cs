@@ -73,5 +73,26 @@ namespace AWS_S3_Access_WPF
                 listbox_bucketList.Items.Add((str));
             }
         }
+
+        private void ListBucketObjects_button_Click(object sender, RoutedEventArgs e)
+        {
+            listbox_bucketObjList.Items.Clear();
+            if (listbox_bucketList.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please list the buckets and select the bucket whose contents you want to view");
+                return;
+            }
+
+            string selectedItemText = listbox_bucketList.SelectedItem.ToString();
+
+            var temp = selectedItemText.Split(' '); // TODO: Use a better logic than this. Clean this up
+            string bucketName = temp[0];
+            var objList = s3Accesser.ListAllFilesInBucket(bucketName);
+
+            foreach (var obj in objList)
+            {
+                listbox_bucketObjList.Items.Add(obj.ToString());
+            }
+        }
     }
 }

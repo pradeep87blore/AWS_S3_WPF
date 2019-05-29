@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BucketObjectInfo.cs" />
+    <Compile Include="ActionClasses\BucketObjectLister.cs" />
     <Compile Include="BucketInfo.cs" />
     <Compile Include="ActionClasses\BucketInfoFetcher.cs" />
     <Compile Include="ActionClasses\BucketProperties.cs" />
