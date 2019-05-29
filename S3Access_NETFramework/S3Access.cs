@@ -15,9 +15,9 @@ namespace S3Access_NETFramework
     {
 
         // Create the specified bucket. If it fails, return an empty string, else return the URL to the bucket
-        public string CreateBucket(string bucketName)
+        public string CreateBucket(string bucketName, bool publicAccessAllowed = false)
         {
-            return BucketCreator.CreateBucket(bucketName);
+            return BucketCreator.CreateBucket(bucketName, publicAccessAllowed);
         }
         // Upload the file to the specified bucket and return the URL to the same
         public bool UploadFile(string sFilePath, string bucketName)
@@ -37,6 +37,12 @@ namespace S3Access_NETFramework
 
             return false;
         }
+
+        public bool EnableBucketVersioning(string bucketName, bool bEnableVersioning)
+        {
+            return true;
+        }
+
 
         // Return value, a list of tuples of fileName, fileUrl
         public List<Tuple<string, string>> ListAllFilesInBucket(string bucketName)

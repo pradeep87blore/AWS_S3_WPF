@@ -55,14 +55,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BucketInfo.cs" />
-    <Compile Include="BucketInfoFetcher.cs" />
-    <Compile Include="BucketPolicies.cs" />
-    <Compile Include="BucketCreator.cs" />
+    <Compile Include="ActionClasses\BucketInfoFetcher.cs" />
+    <Compile Include="ActionClasses\BucketProperties.cs" />
+    <Compile Include="ActionClasses\BucketCreator.cs" />
     <Compile Include="ProfileCreator.cs" />
     <Compile Include="S3Access.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="S3ClientProvider.cs" />
-    <Compile Include="ObjectUploader.cs" />
+    <Compile Include="ActionClasses\ObjectUploader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

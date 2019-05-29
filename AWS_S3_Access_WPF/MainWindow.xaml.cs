@@ -57,9 +57,9 @@ namespace AWS_S3_Access_WPF
                 return;
             }
 
-            string bucketName = "pradeep87blore4";
+            string bucketName = "pradeep87blore5";
 
-            Console.WriteLine(s3Accesser.CreateBucket(bucketName));
+            Console.WriteLine(s3Accesser.CreateBucket(bucketName, true));
 
             s3Accesser.UploadFile(selectedFile, bucketName);
         }
